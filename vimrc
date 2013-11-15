@@ -255,7 +255,7 @@
 
   if has('gui_running')
     " open maximized
-    set lines=999 columns=9999
+    "set lines=999 columns=9999
     if s:is_windows
       autocmd GUIEnter * simalt ~x
     endif
@@ -357,7 +357,9 @@
     "}}}
     NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
     NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
-    NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
+    "NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
+    " moll/vim-node is better
+    NeoBundleLazy 'moll/vim-node', {'autoload':{'filetypes':['javascript']}}
     NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
     NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
   endif "}}}
@@ -410,14 +412,14 @@
     if s:settings.autocomplete_method == 'ycm' "{{{
       NeoBundle 'Valloric/YouCompleteMe', {'vim_version':'7.3.584'} "{{{
         let g:ycm_complete_in_comments_and_strings=1
-        let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
-        let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
+        let g:ycm_key_list_select_completion=['<C-n>', '<Down>', '<tab>']
+        let g:ycm_key_list_previous_completion=['<C-p>', '<Up>', '<s-tab>']
         let g:ycm_filetype_blacklist={'unite': 1}
       "}}}
       NeoBundle 'SirVer/ultisnips' "{{{
-        let g:UltiSnipsExpandTrigger="<tab>"
-        let g:UltiSnipsJumpForwardTrigger="<tab>"
-        let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+        let g:UltiSnipsExpandTrigger="<c-enter>"
+        let g:UltiSnipsJumpForwardTrigger="<C-D-i>"
+        let g:UltiSnipsJumpBackwardTrigger="<C-D-S-i>"
         let g:UltiSnipsSnippetsDir='~/.vim/snippets'
       "}}}
     else
