@@ -1,6 +1,6 @@
-# bling.vim
+# tarq.vim
 
-A highly tuned vim distribution that will blow your socks off!
+Customized fork of `bling.vim`. I've mostly added some tweaks for working with Node.JS on OSX. This includs some custom key bindings, TernJS, and vdebug.
 
 ## introduction
 
