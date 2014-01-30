@@ -310,7 +310,7 @@
       vmap <c-up> [egv
       vmap <c-down> ]egv
     "}}}
-    NeoBundleDepends 'Shougo/vimproc.vim', {
+    NeoBundle 'Shougo/vimproc.vim', {
       \ 'build': {
         \ 'mac': 'make -f make_mac.mak',
         \ 'unix': 'make -f make_unix.mak',
@@ -423,6 +423,7 @@
         let g:UltiSnipsSnippetsDir='~/.vim/snippets'
       "}}}
     else
+      NeoBundle 'Shougo/neosnippet-snippets'
       NeoBundle 'Shougo/neosnippet.vim' "{{{
         let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets,~/.vim/snippets'
         let g:neosnippet#enable_snipmate_compatibility=1
@@ -472,12 +473,8 @@
       vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
     "}}}
     NeoBundle 'jiangmiao/auto-pairs'
-    NeoBundle 'skwp/vim-easymotion' "{{{
-      " NeoBundle 'Lokaltog/vim-easymotion'
-      let g:EasyMotion_keys = 'asdfghjklqwertyuiopzxcvbnm'
-
-      autocmd ColorScheme * highlight EasyMotionTarget ctermfg=32 guifg=#0087df
-      autocmd ColorScheme * highlight EasyMotionShade ctermfg=237 guifg=#3a3a3a
+    NeoBundle 'justinmk/vim-sneak' "{{{
+      let g:sneak#streak = 1
     "}}}
   endif "}}}
   if count(s:settings.plugin_groups, 'navigation') "{{{
@@ -622,7 +619,7 @@
     "}}}
   endif "}}}
   if count(s:settings.plugin_groups, 'textobj') "{{{
-    NeoBundleDepends 'kana/vim-textobj-user'
+    NeoBundle 'kana/vim-textobj-user'
     NeoBundle 'kana/vim-textobj-indent'
     NeoBundle 'kana/vim-textobj-entire'
     NeoBundle 'lucapette/vim-textobj-underscore'
@@ -694,6 +691,8 @@
   nmap <leader>fef :call Preserve("normal gg=G")<CR>
   nmap <leader>f$ :call StripTrailingWhitespace()<CR>
   vmap <leader>s :sort<cr>
+
+  nnoremap <leader>w :w<cr>
 
   " toggle paste
   map <F6> :set invpaste<CR>:set paste?<CR>
@@ -844,7 +843,6 @@
   NeoBundle 'chriskempson/base16-vim'
   NeoBundle 'w0ng/vim-hybrid'
   NeoBundle 'sjl/badwolf'
-  NeoBundle 'jelera/vim-gummybears-colorscheme'
   NeoBundle 'zeis/vim-kolor' "{{{
     let g:kolor_underlined=1
   "}}}
