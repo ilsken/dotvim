@@ -264,7 +264,7 @@
     set guioptions-=T                                 "toolbar icons
 
     if s:is_macvim
-      set gfn=Ubuntu_Mono:h14
+      set gfn=monoOne:h12
       set transparency=2
     endif
 
@@ -297,8 +297,7 @@
     NeoBundle 'matchit.zip'
     NeoBundle 'bling/vim-airline' "{{{
       let g:airline#extensions#tabline#enabled = 1
-      let g:airline#extensions#tabline#left_sep=' '
-      let g:airline#extensions#tabline#left_alt_sep='¦'
+
     "}}}
     NeoBundle 'tpope/vim-surround'
     NeoBundle 'tpope/vim-repeat'
@@ -357,9 +356,13 @@
     "}}}
     NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
     NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
-    "NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
-    " moll/vim-node is better
-    NeoBundleLazy 'moll/vim-node', {'autoload':{'filetypes':['javascript']}}
+    NeoBundleLazy 'heavenshell/vim-jsdoc', {'autoload': {'filetypes': ['coffee']}} "{{{
+      let g:jsdoc_allow_input_prompt=1
+      let g:js_doc_return=1
+      let g:jsdoc_default_mapping=0
+      nmap <silent> <Leader><Leader>l <Plug>(jsdoc)
+    "}}}
+    NeoBundle 'moll/vim-node', {'autoload':{'filetypes':['javascript']}}
     NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
     NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
   endif "}}}
@@ -457,7 +460,10 @@
     NeoBundle 'terryma/vim-expand-region'
     NeoBundle 'terryma/vim-multiple-cursors'
     NeoBundle 'chrisbra/NrrwRgn'
-    NeoBundle 'dahu/vim-fanfingtastic'
+"    NeoBundle 'dahu/vim-fanfingtastic'
+    NeoBundle 'Smart-Home-Key'
+    NeoBundle 'ilsken/Smart-End-Key'
+
     NeoBundleLazy 'godlygeek/tabular', {'autoload':{'commands':'Tabularize'}} "{{{
       nmap <Leader>a& :Tabularize /&<CR>
       vmap <Leader>a& :Tabularize /&<CR>
@@ -624,21 +630,15 @@
     NeoBundle 'kana/vim-textobj-entire'
     NeoBundle 'lucapette/vim-textobj-underscore'
   endif "}}}
-  if count(s:settings.plugin_groups, 'misc') "{{{
+  
+  if (count(s:settings.plugin_groups, 'tmux')) "{{{
     if exists('$TMUX')
       NeoBundle 'christoomey/vim-tmux-navigator'
     endif
-    NeoBundle 'kana/vim-vspec'
-    NeoBundleLazy 'tpope/vim-scriptease', {'autoload':{'filetypes':['vim']}}
-    NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
-    if executable('redcarpet') && executable('instant-markdown-d')
-      NeoBundleLazy 'suan/vim-instant-markdown', {'autoload':{'filetypes':['markdown']}}
-    endif
-    NeoBundleLazy 'guns/xterm-color-table.vim', {'autoload':{'commands':'XtermColorTable'}}
-    NeoBundle 'chrisbra/vim_faq'
-    NeoBundle 'vimwiki'
-    NeoBundle 'bufkill.vim'
-    NeoBundle 'mhinz/vim-startify' "{{{
+  endif "}}}
+
+  if count(s:settings.plugin_groups, 'misc') "{{{
+      NeoBundle 'mhinz/vim-startify' "{{{
       let g:startify_session_dir = '~/.vim/.cache/sessions'
       let g:startify_change_to_vcs_root = 1
       let g:startify_show_sessions = 1
@@ -650,31 +650,20 @@
       let g:syntastic_warning_symbol = '∆'
       let g:syntastic_style_warning_symbol = '≈'
     "}}}
-    NeoBundleLazy 'mattn/gist-vim', { 'depends': 'mattn/webapi-vim', 'autoload': { 'commands': 'Gist' } } "{{{
-      let g:gist_post_private=1
-      let g:gist_show_privates=1
-    "}}}
-    NeoBundleLazy 'Shougo/vimshell.vim', {'autoload':{'commands':[ 'VimShell', 'VimShellInteractive' ]}} "{{{
-      if s:is_macvim
-        let g:vimshell_editor_command='mvim'
-      else
-        let g:vimshell_editor_command='vim'
-      endif
-      let g:vimshell_right_prompt='getcwd()'
-      let g:vimshell_temporary_directory='~/.vim/.cache/vimshell'
-      let g:vimshell_vimshrc_path='~/.vim/vimshrc'
-
-      nnoremap <leader>c :VimShell -split<cr>
-      nnoremap <leader>cc :VimShell -split<cr>
-      nnoremap <leader>cn :VimShellInteractive node<cr>
-      nnoremap <leader>cl :VimShellInteractive lua<cr>
-      nnoremap <leader>cr :VimShellInteractive irb<cr>
-      nnoremap <leader>cp :VimShellInteractive python<cr>
-    "}}}
-    NeoBundleLazy 'zhaocai/GoldenView.Vim', {'autoload':{'mappings':['<Plug>ToggleGoldenViewAutoResize']}} "{{{
+    NeoBundle 'zhaocai/GoldenView.Vim' "{{{
       let g:goldenview__enable_default_mapping=0
+      " split into tiled windows
+      nmap <silent> <C-t> <Plug>GoldenViewSplit
+      " switch with main and toggle back
+      nmap <silent> <C-y> <Plug>GoldenViewSwitchMain
+      nmap <silent> <C-u> <Plug>GoldenViewSwitchToggle
+      nmap <silent> <C-r> <Plug>GoldenViewResize
       nmap <F4> <Plug>ToggleGoldenViewAutoResize
+
     "}}}
+    NeoBundle 'troydm/shellasync.vim'
+    NeoBundle 'jtratner/vim-flavored-markdown'
+    NeoBundle 'bufkill.vim'    
   endif "}}}
   if count(s:settings.plugin_groups, 'windows') "{{{
     NeoBundleLazy 'PProvost/vim-ps1', {'autoload':{'filetypes':['ps1']}} "{{{
@@ -783,7 +772,7 @@
   nnoremap Y y$
 
   " hide annoying quit message
-  nnoremap <C-c> <C-c>:echo<cr>
+  " nnoremap <C-c> <C-c>:echo<cr>
 
   " window killer
   nnoremap <silent> Q :call CloseWindowOrKillBuffer()<cr>
@@ -830,23 +819,24 @@
   autocmd FileType python setlocal foldmethod=indent
   autocmd FileType markdown setlocal nolist
   autocmd FileType vim setlocal fdm=indent keywordprg=:help
+  autocmd BufRead,BufNewFile *.md set filetype=markdown
 "}}}
 
 " color schemes {{{
-  NeoBundle 'altercation/vim-colors-solarized' "{{{
-    let g:solarized_termcolors=256
-    let g:solarized_termtrans=1
-  "}}}
-  NeoBundle 'nanotech/jellybeans.vim'
+"  NeoBundle 'altercation/vim-colors-solarized' "{{{
+"    let g:solarized_termcolors=256
+"    let g:solarized_termtrans=1
+"  "}}}
+"  NeoBundle 'nanotech/jellybeans.vim'
   NeoBundle 'tomasr/molokai'
   NeoBundle 'chriskempson/vim-tomorrow-theme'
   NeoBundle 'chriskempson/base16-vim'
   NeoBundle 'w0ng/vim-hybrid'
   NeoBundle 'sjl/badwolf'
-  NeoBundle 'zeis/vim-kolor' "{{{
-    let g:kolor_underlined=1
-  "}}}
-
+"  NeoBundle 'zeis/vim-kolor' "{{{
+"    let g:kolor_underlined=1
+"  "}}}
+  NeoBundle 'Pychimp/vim-luna'
   exec 'colorscheme '.s:settings.colorscheme
 "}}}
 
