@@ -297,7 +297,8 @@
     NeoBundle 'matchit.zip'
     NeoBundle 'bling/vim-airline' "{{{
       let g:airline#extensions#tabline#enabled = 1
-
+      let g:airline#extensions#tabline#left_sep=' '
+      let g:airline#extensions#tabline#left_alt_sep='¦'
     "}}}
     NeoBundle 'tpope/vim-surround'
     NeoBundle 'tpope/vim-repeat'
@@ -336,8 +337,8 @@
         endif
         return "\<c-y>n"
       endfunction
-      autocmd FileType xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><c-tab> <c-y>,
-      autocmd FileType html imap <buffer><expr><c-tab> <sid>zen_html_tab()
+      autocmd FileType xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><tab> <c-y>,
+      autocmd FileType html imap <buffer><expr><tab> <sid>zen_html_tab()
     "}}}
   endif "}}}
   if count(s:settings.plugin_groups, 'javascript') "{{{
@@ -356,13 +357,9 @@
     "}}}
     NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
     NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
-    NeoBundleLazy 'heavenshell/vim-jsdoc', {'autoload': {'filetypes': ['coffee']}} "{{{
-      let g:jsdoc_allow_input_prompt=1
-      let g:js_doc_return=1
-      let g:jsdoc_default_mapping=0
-      nmap <silent> <Leader><Leader>l <Plug>(jsdoc)
-    "}}}
-    NeoBundle 'moll/vim-node', {'autoload':{'filetypes':['javascript']}}
+    "NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
+    " moll/vim-node is better
+    NeoBundleLazy 'moll/vim-node', {'autoload':{'filetypes':['javascript']}}
     NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
     NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
   endif "}}}
@@ -494,18 +491,17 @@
       let g:undotree_SetFocusWhenToggle=1
       nnoremap <silent> <F5> :UndotreeToggle<CR>
     "}}}
-  " NeoBundleLazy 'EasyGrep', {'autoload':{'commands':'GrepOptions'}} "{{{
-  "   let g:EasyGrepRecursive=1
-  "   let g:EasyGrepAllOptionsInExplorer=1
-  "   let g:EasyGrepCommand=1
-  "   nnoremap <leader>vo :GrepOptions<cr>
+    NeoBundleLazy 'EasyGrep', {'autoload':{'commands':'GrepOptions'}} "{{{
+      let g:EasyGrepRecursive=1
+      let g:EasyGrepAllOptionsInExplorer=1
+      let g:EasyGrepCommand=1
+      nnoremap <leader>vo :GrepOptions<cr>
     "}}}
     NeoBundle 'kien/ctrlp.vim', { 'depends': 'tacahiroy/ctrlp-funky' } "{{{
       let g:ctrlp_clear_cache_on_exit=1
       let g:ctrlp_max_height=40
       let g:ctrlp_show_hidden=0
       let g:ctrlp_follow_symlinks=1
-      let g:ctrlp_working_path_mode=0
       let g:ctrlp_max_files=20000
       let g:ctrlp_cache_dir='~/.vim/.cache/ctrlp'
       let g:ctrlp_reuse_window='startify'
@@ -560,7 +556,7 @@
         let g:unite_source_grep_recursive_opt=''
       elseif executable('ack')
         let g:unite_source_grep_command='ack'
-        let g:unite_source_grep_default_opts='--no-heading --no-color -a -C4'
+        let g:unite_source_grep_default_opts='--no-heading --no-color -C4'
         let g:unite_source_grep_recursive_opt=''
       endif
 
@@ -575,12 +571,13 @@
       nnoremap [unite] <nop>
 
       if s:is_windows
-        nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec buffer file_mru bookmark<cr><c-u>
-        nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec<cr><c-u>
+        nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec:! buffer file_mru bookmark<cr><c-u>
+        nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec:!<cr><c-u>
       else
-        nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async buffer file_mru bookmark<cr><c-u>
-        nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async<cr><c-u>
+        nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
+        nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
       endif
+      nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
       nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
       nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
       nnoremap <silent> [unite]b :<C-u>Unite -auto-resize -buffer-name=buffers buffer<cr>
@@ -588,6 +585,7 @@
       nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
       nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
     "}}}
+    NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
     NeoBundleLazy 'osyo-manga/unite-airline_themes', {'autoload':{'unite_sources':'airline_themes'}} "{{{
       nnoremap <silent> [unite]a :<C-u>Unite -winheight=10 -auto-preview -buffer-name=airline_themes airline_themes<cr>
     "}}}
@@ -650,7 +648,28 @@
       let g:syntastic_warning_symbol = '∆'
       let g:syntastic_style_warning_symbol = '≈'
     "}}}
-    NeoBundle 'zhaocai/GoldenView.Vim' "{{{
+    NeoBundleLazy 'mattn/gist-vim', { 'depends': 'mattn/webapi-vim', 'autoload': { 'commands': 'Gist' } } "{{{
+      let g:gist_post_private=1
+      let g:gist_show_privates=1
+    "}}}
+    NeoBundleLazy 'Shougo/vimshell.vim', {'autoload':{'commands':[ 'VimShell', 'VimShellInteractive' ]}} "{{{
+      if s:is_macvim
+        let g:vimshell_editor_command='mvim'
+      else
+        let g:vimshell_editor_command='vim'
+      endif
+      let g:vimshell_right_prompt='getcwd()'
+      let g:vimshell_data_directory='~/.vim/.cache/vimshell'
+      let g:vimshell_vimshrc_path='~/.vim/vimshrc'
+
+      nnoremap <leader>c :VimShell -split<cr>
+      nnoremap <leader>cc :VimShell -split<cr>
+      nnoremap <leader>cn :VimShellInteractive node<cr>
+      nnoremap <leader>cl :VimShellInteractive lua<cr>
+      nnoremap <leader>cr :VimShellInteractive irb<cr>
+      nnoremap <leader>cp :VimShellInteractive python<cr>
+    "}}}
+    NeoBundleLazy 'zhaocai/GoldenView.Vim', {'autoload':{'mappings':['<Plug>ToggleGoldenViewAutoResize']}} "{{{
       let g:goldenview__enable_default_mapping=0
       " split into tiled windows
       nmap <silent> <C-t> <Plug>GoldenViewSplit
