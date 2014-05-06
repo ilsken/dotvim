@@ -5,132 +5,86 @@ else
   let g:dotvim_settings.colorscheme = 'luna-term'
 endif
 let g:dotvim_settings.autocomplete_method = 'ycm'
-let g:dotvim_settings.plugin_groups_include = ['web', 'javascript']
-let g:dotvim_settings.disabled_plugins=['NERDTree']
+let g:dotvim_settings.plugin_groups = ['core', 'web','javascript', 'navigation', 'unite', 'indents', 'editing', 'autocomplete', 'scm', "tmux", "misc"]
+let g:dotvim_settings.disabled_plugins=[]
 let g:dotvim_settings.version = 1
 
-
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+" powerline symbols
+"let g:airline_left_sep = ''
+"let g:airline#extensions#tabline#left_sep=''
+"let g:airline#extensions#tabline#left_alt_sep=''
+"let g:airline_left_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+"let g:airline_symbols.branch = ''
+"let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = ''
+" auto pair toggle {{{
+  let g:AutoPairsShortcutToggle = "<C-S-p>"
+" }}}
+let g:markdown_fenced_languages = ['javascript']
+let g:goldenview__enable_at_startup = 0
 source ~/.vim/vimrc
 set shell=/bin/bash
 "
 " Node JS
 "
-set wildignore+=\*/node_modules/\*
+set wildignore+=*/node_modules/*
 
-"===============================================================================
-" Hotkeys
-"===============================================================================
+" hotkeys {{{
+  " Tagbar
+  noremap <silent> <Leader>t :TagbarToggle<CR>
 
-" Tagbar
-noremap <silent> <Leader>t :TagbarToggle<CR>
+  " Quick Fix Bar
+  nnoremap <silent> <Leader>f :botright copen<CR>
 
-" Quick Fix Bar
-nnoremap <silent> <Leader>f :botright copen<CR>
+  " <Leader>x Open Shell
+  nnoremap <Leader>x :ConqueTerm zsh
 
-" <Leader>x Open Shell
-nnoremap <Leader>x :shell 
+  " <Leader>q Close Buffer
+  nnoremap <silent> <Leader>q :call CloseWindowOrKillBuffer()<cr>
 
-" <Leader>q Close Buffer
-nnoremap <silent> <Leader>q :call CloseWindowOrKillBuffer()<cr>
+  " <Leader>d Kill Buffer, Keep Split
+  nnoremap <silent> <leader>d :BD<CR>
 
-" <Leader>d Kill Buffer, Keep Split
-nnoremap <silent> <Leader>d :bd\|bd # <CR>
+  " Clear Highlights on Enter
+  nnoremap <CR> :nohlsearch<CR>/<BS>
 
-" Clear Highlights on Enter
-nnoremap <CR> :nohlsearch<CR>/<BS>
+  " Mac-specific hotkeys {{{
+    source ~/.vim/mac.vim
+  " }}}
 
-" OSX Movement Hotkeys (With Smart Home/End)
-let macvim_skip_cmd_opt_movement = 1
-
-map  <D-Left>       <Home>
-map! <D-Left>       <Home>
-no   <M-Left>       <C-Left>
-no!  <M-Left>       <C-Left>
-
-map  <D-Right>      <End>
-map! <D-Right>      <End>
-no   <M-Right>      <C-Right>
-no!  <M-Right>      <C-Right>
-
-map  <D-Up>         <C-Home>
-imap <D-Up>         <C-Home>
-no   <M-Up>         {
-ino  <M-Up>         <C-o>{
-
-no  <D-Down>       <C-End>
-ino <D-Down>       <C-End>
-no  <M-Down>       }
-ino <M-Down>       <C-o>}
-
-ino   <M-BS>         <C-w>
-ino   <D-BS>         <C-u>
-
-" Selection Hotkeys (Smart Home/End)
-nmap <S-D-Left>     v<Home>
-vmap <S-D-Left>     <Home>
-imap <S-D-Left>     <C-\><C-n>gh<Home>
-
-nn   <S-M-Left>     v<C-Left>
-vn   <S-M-Left>     <C-Left>
-ino  <S-M-Left>     <C-\><C-n>gh<C-Left>
-
-nmap  <S-D-Right>    v<End>
-vmap  <S-D-Right>    <End>
-imap  <S-D-Right>    <C-\><C-n>gh<End>
-
-nn   <S-M-Right>    v<C-Right>
-vn   <S-M-Right>    <C-Right>
-ino  <S-M-Right>    <C-\><C-n>gh<C-Right>
-
-nn   <S-D-Up>       v<C-Home>
-vn   <S-D-Up>       <C-Home>
-ino  <S-D-Up>       <C-\><C-n>gh<C-Home>
-
-nn   <S-M-Up>       v{
-vn   <S-M-Up>       {
-ino  <S-M-Up>       <C-\><C-n>gh{
-
-nn   <S-D-Down>     v<S-C-End>
-vn   <S-D-Down>     <S-C-End>
-ino  <S-D-Down>     <C-\><C-n>gh<S-C-End>
-
-nn   <S-M-Down>       v}
-vn   <S-M-Down>       }
-ino  <S-M-Down>       <C-\><C-n>gh}
+" NERDTree {{{
+  let NERDTreeShowBookmarks=1
+  let NERDTreeShowHidden=1
+  let NERDTreeShowLineNumbers=0
+" }}}
 
 
 
-"===============================================================================
-" NERDTree
-"===============================================================================
+"NeoBundle 'jtratner/vim-flavored-markdown'
+"NeoBundle 'troydm/shellasync.vim'
 
-let NERDTreeShowBookmarks=1
-let NERDTreeShowHidden=1
-
-
-
-NeoBundle 'jtratner/vim-flavored-markdown'
-NeoBundle 'joonty/vdebug.git'
-NeoBundle 'troydm/shellasync.vim'
-NeoBundle 'heavenshell/vim-jsdoc'
-let g:jsdoc_allow_input_prompt=1
-let g:js_doc_return=1
-let g:jsdoc_default_mapping=0
-nmap <silent> <Leader><Leader>l <Plug>(jsdoc)
 "===============================================================================
 " VDebug
 "===============================================================================
+NeoBundle 'joonty/vdebug'
+NeoBundle 'AsyncCommand'
+NeoBundle 'Shougo/vinarise.vim'
 let g:vdebug_keymap = {
-\    "run" : "<C-r>",
-\    "run_to_cursor" : "<Leader><Leader>r",
-\    "step_over" : "<C-s>",
-\    "step_into" : "<C-d>",
-\    "step_out" : "<C-f>",
-\    "close" : "<C-q>",
-\    "detach" : "<C-w>",
-\    "set_breakpoint" : "<C-b>",
-\    "get_context" : "<C-g>",
-\    "eval_under_cursor" : "<C-e>",
+\    "run" : "<leader>r",
+\    "run_to_cursor" : "<leader><leader>r",
+\    "step_over" : "<leader><leader>s",
+\    "step_into" : "<leader><leader>i",
+\    "step_out" : "<leader><leader>o",
+\    "close" : "<leader><leader>c",
+\    "detach" : "<leader><leader>d",
+\    "set_breakpoint" : "<leader><leader>b",
+\    "get_context" : "<leader><leader>g",
+\    "eval_under_cursor" : "<leader><leader>e",
 \    "eval_visual" : "<Leader>e",
 \}
 
@@ -144,19 +98,26 @@ set guioptions-=L
 set guioptions-=r
 
 " Node hotkeys
-autocmd User Node 
+autocmd User Node
  \ if &filetype == "javascript" | 
- \ setlocal expandtab | 
+ \ setlocal expandtab |
  \ setlocal tabstop=2 |
  \ setlocal shiftwidth=2 |
- \ noremap <buffer> <Leader><Leader>r :TernRename<CR> |
- \ noremap <buffer> <Leader><Leader>t :TernType<CR> |
- \ noremap <buffer> <Leader>td :TernDoc<CR> |
- \ noremap <buffer> <Leader>tf :TernRefs<CR> |
+ \ noremap <buffer> <leader>re :TernRename<CR> |
+ \ noremap <buffer> <leader>t :TernType<CR> |
+ \ noremap <buffer> <C-d> :TernDoc<CR> |
+ \ noremap <buffer>  :TernRefs<CR> |
  \ endif
 
-
-
+"{{{ markdown
+ autocmd FileType markdown setlocal nonu lsp=8 guifont=Source_Code_Pro_Light:h18 spell spelllang=en_us
+ autocmd VimEnter */Notes/**.md colorscheme markdown | execute "AirlineTheme tommorow" | setlocal laststatus=0
+  "\ setlocal nonu 
+"  \ colorscheme markdown |
+" \ setlocal linespace=4 |
+" \ setlocal guifont=Source_Code_Pro_Light:h18 
+" \ setlocal tw=80 
+"}}}
 function! GetMarkbookTopic()
   let start = "Notes/"
   let path = expand("%:p")

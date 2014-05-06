@@ -138,6 +138,7 @@
   set viewoptions=folds,options,cursor,unix,slash     "unix/windows compatibility
   set encoding=utf-8                                  "set encoding for text
   if exists('$TMUX')
+    set ttymouse=xterm2                               " dragging support
     set clipboard=
   else
     set clipboard=unnamed                             "sync with OS clipboard
@@ -292,7 +293,7 @@
   endif
 "}}}
 
-" plugin/mapping configuration {{{
+  " plugin/mapping configuration {{{
   if count(s:settings.plugin_groups, 'core') "{{{
     NeoBundle 'matchit.zip'
     NeoBundle 'bling/vim-airline' "{{{
@@ -585,7 +586,59 @@
       nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
       nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
       nnoremap <silent> [unite]x :<C-u>Unite -buffer-name=functions function<cr>
-      
+      let g:unite_source_menu_menus = {}
+      let g:unite_source_menu_menus.git = {
+        \ 'description' : '            git commands
+        \                            [unite]g',
+      \}
+      let g:unite_source_menu_menus.git.command_candidates = [
+          \['tig                                                        ,gs',
+              \'normal ,gt'],
+          \['git status       (Fugitive)                                ,gs',
+              \'Gstatus'],
+          \['git diff         (Fugitive)                                ,gd',
+              \'Gdiff'],
+          \['git commit       (Fugitive)                                ,gc',
+              \'Gcommit'],
+          \['git log          (Fugitive)                                ,gl',
+              \'exe "silent Glog | Unite quickfix"'],
+          \['git blame        (Fugitive)                                ,gb',
+              \'Gblame'],
+          \['git stage        (Fugitive)                                ,gw',
+              \'Gwrite'],
+          \['git checkout     (Fugitive)                                ,go',
+              \'Gread'],
+          \['git rm           (Fugitive)                                ,gr',
+              \'Gremove'],
+          \['git mv           (Fugitive)                                ,gm',
+              \'exe "Gmove " input("destination: ")'],
+          \['git push         (Fugitive, output to buffer)              ,gp',
+              \'Git! push'],
+          \['git pull         (Fugitive, output to buffer)              ,gP',
+              \'Git! pull'],
+          \['git cd           (Fugitive)',
+              \'Gcd'],
+          \]
+    nnoremap <silent>[unite]g :Unite -silent -start-insert menu:git<CR>
+    
+    let g:unite_source_menu_menus.debugger = {
+      \ 'description' : '            debugger commands
+      \                            [unite]d',
+    \}
+    let g:unite_source_menu_menus.debugger.command_candidates = [
+      \['►  Start Debugger (Node.js)                                         ', 'exe "ConqueTermSplit bash -c \"sleep 1; node-dbgp ".expand("%:p")."\"" | VdebugStart'],
+      \['►  Run until breakpoint                                        <C-r>', 'VdebugStart'],
+      \['✂︎  Detach from process                                         <C-d>', 'python debugger.detach()'],
+      \['⤵︎  Step into                                                   <C-d>', 'python debugger.step_into()'],
+      \['⤼  Step over                                                   <C-s>', 'python debugger.step_over()'],
+      \['↥  Step out                                                    <C-f>', 'python debugger.step_out()'],
+      \['◉  Toggle Breakpoint                                           <C-b>', 'Breakpoint'],
+      \['◉? Add Conditional Breakpoint                                       ', 'exe "Breakpoint conditional " input("condition: ")'],
+      \['◎  Remove All Breakpoints                                           ', 'BreakpointRemove *'],
+      \['⚡︎  Evaluate Code                                                    ', 'exe "VdebugEval " input("> ")'],
+      \['䷰  Toggle Breakpoint Window                                         ', 'BreakpointWindow']
+    \]
+    nnoremap <silent>[unite]d :Unite -silent -buffer-name=debugmenu -start-insert menu:debugger<CR>
     "}}}
     NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
     NeoBundleLazy 'osyo-manga/unite-airline_themes', {'autoload':{'unite_sources':'airline_themes'}} "{{{
